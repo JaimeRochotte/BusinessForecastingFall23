@@ -1,0 +1,86 @@
+---
+title: "HW 1"
+author: "Jaime Rochotte"
+output: html_document
+date: "2023-09-18"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+
+library(readxl)
+Typical_Employee_Survey_Data <- read_excel("~/Downloads/Typical_Employee_Survey_Data.xlsx", 
+    col_names = FALSE)
+View(Typical_Employee_Survey_Data)
+
+#Column Names
+colnames(Typical_Employee_Survey_Data) <-c("Age","Gender","Job_Satisfaction","Important_Characteristic","Years_of_Service", "Promotion_Likelihood","Decision_Making","Budgetary_Decisions", "Level_of_Pride","Loyalty", "Relations")
+
+#Five Number
+fivenum(Typical_Employee_Survey_Data$Age)
+fivenum(Typical_Employee_Survey_Data$Gender)
+fivenum(Typical_Employee_Survey_Data$Job_Satisfaction)
+fivenum(Typical_Employee_Survey_Data$Important_Characteristic)
+fivenum(Typical_Employee_Survey_Data$Years_of_Service)
+fivenum(Typical_Employee_Survey_Data$Promotion_Likelihood)
+fivenum(Typical_Employee_Survey_Data$Decision_Making)
+fivenum(Typical_Employee_Survey_Data$Budgetary_Decisions)
+fivenum(Typical_Employee_Survey_Data$Level_of_Pride)
+fivenum(Typical_Employee_Survey_Data$Loyalty)
+fivenum(Typical_Employee_Survey_Data$Relations)
+
+#Box Plot
+boxplot(Typical_Employee_Survey_Data$Age, main="Age")
+boxplot(Typical_Employee_Survey_Data$Gender, main="Gender")
+boxplot(Typical_Employee_Survey_Data$Job_Satisfaction, main="Job Satisfaction")
+boxplot(Typical_Employee_Survey_Data$Important_Characteristic,main="Important Characteristic")
+boxplot(Typical_Employee_Survey_Data$Years_of_Service,main="Years of Service")
+boxplot(Typical_Employee_Survey_Data$Promotion_Likelihood,main="Promotion Likelihood")
+boxplot(Typical_Employee_Survey_Data$Decision_Making,main="Decision Making")
+boxplot(Typical_Employee_Survey_Data$Budgetary_Decisions, main="Budgetary Decision")
+boxplot(Typical_Employee_Survey_Data$Level_of_Pride,main="Level of Pride")
+boxplot(Typical_Employee_Survey_Data$Loyalty,main="Loyalty")
+boxplot(Typical_Employee_Survey_Data$Relations,main="Relations")
+
+#Factor 
+Typical_Employee_Survey_Data$Gender<- as.factor(Typical_Employee_Survey_Data$Gender)
+Typical_Employee_Survey_Data$Job_Satisfaction <- as.factor(Typical_Employee_Survey_Data$Job_Satisfaction)
+Typical_Employee_Survey_Data$Important_Characteristic <- as.factor(Typical_Employee_Survey_Data$Important_Characteristic)
+Typical_Employee_Survey_Data$Promotion_Likelihood <- as.factor(Typical_Employee_Survey_Data$Promotion_Likelihood)
+Typical_Employee_Survey_Data$Decision_Making <- as.factor(Typical_Employee_Survey_Data$Decision_Making)
+Typical_Employee_Survey_Data$Budgetary_Decisions <- as.factor(Typical_Employee_Survey_Data$Budgetary_Decisions)
+Typical_Employee_Survey_Data$Level_of_Pride <- as.factor(Typical_Employee_Survey_Data$Level_of_Pride)
+Typical_Employee_Survey_Data$Loyalty <- as.factor(Typical_Employee_Survey_Data$Loyalty)
+Typical_Employee_Survey_Data$Relations <- as.factor(Typical_Employee_Survey_Data$Relations)
+
+
+
+#Visual
+hist(Typical_Employee_Survey_Data$Age, main = "Age")
+plot(Typical_Employee_Survey_Data$Gender, main="Gender")
+plot(Typical_Employee_Survey_Data$Job_Satisfaction,main="Job Satisfaction")
+plot(Typical_Employee_Survey_Data$Important_Characteristic, main = "Important Characteristic")
+barplot(Typical_Employee_Survey_Data$Years_of_Service, main= "Years of Service")
+plot(Typical_Employee_Survey_Data$Promotion_Likelihood,main="Promotion Likelihood")
+plot(Typical_Employee_Survey_Data$Decision_Making,main="Decision Making")
+plot(Typical_Employee_Survey_Data$Budgetary_Decisions, main="Budgetary Decision")
+plot(Typical_Employee_Survey_Data$Level_of_Pride,main="Level of Pride")
+plot(Typical_Employee_Survey_Data$Loyalty,main="Loyalty")
+plot(Typical_Employee_Survey_Data$Relations,main="Relations")
+
+
+
+#Scatterplots
+plot(Typical_Employee_Survey_Data)
+plot(x=Typical_Employee_Survey_Data$Age, y=Typical_Employee_Survey_Data$Years_of_Service)
+plot(x=Typical_Employee_Survey_Data$Gender, y=Typical_Employee_Survey_Data$Relations)
+plot(x=Typical_Employee_Survey_Data$Job_Satisfaction, y=Typical_Employee_Survey_Data$Years_of_Service)
+
+
+
+
+
+
+```
