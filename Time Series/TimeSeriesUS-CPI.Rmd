@@ -1,0 +1,18 @@
+---
+title: "Time Series US CPI"
+author: "Jaime Rochotte"
+date: "10/04/2023"
+output: html_document
+---
+
+### This dataset provides monthly data of US Consumer Price Index (CPI). Average of CPI for all US cities in a given month is provided. 
+
+#### Details of columns:
++ Yearmon - Year-month in date format. Day is provided as 1 for each month.
++ CPI - Consumer price index. This is an index that measures the monthly change in prices paid by U.S. consumers.
+
+#### The data set is intriguing as it displays the change in prices over the years for U.S. consumers.
+```{r}
+
+```
+
