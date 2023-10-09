@@ -1,0 +1,40 @@
+---
+title: "Time Series US CPI Forecasting Model"
+author: "Jaime Rochotte"
+date: "10/08/2023"
+output: html_document
+---
+
+### This dataset provides monthly data of US Consumer Price Index (CPI). Average of CPI for all US cities in a given month is provided. 
+
+#### Details of columns:
++ Yearmon - Year-month in date format. Day is provided as 1 for each month.
++ CPI - Consumer price index. This is an index that measures the monthly change in prices paid by U.S. consumers.
+
+#### The data set is intriguing as it displays the change in prices over the years for U.S. consumers.
+
+```{r}
+# Random Plot
+set.seed(30)
+y <- ts(rnorm(50))
+plot(y)
+Acf(y)
+
+#Convert date column to date
+US_CPI$Yearmon <- as.Date(US_CPI$Yearmon)
+#Conver to TS, using Date formatting for Start period, and freq of 12 to do periods monthly
+US_series.ts <- ts(US_CPI$CPI, start= c(as.numeric(format(US_CPI$Yearmon[1],"%Y")), as.numeric(format(US_CPI$Yearmon[1], "%m"))), frequency = 12)
+
+# Residuals
+US_CPI2 <- HoltWinters(US_series.ts)
+attributes(US_CPI2)
+plot(US_CPI2)
+#Forecast
+US_CPIF <- forecast(US_CPI2)
+plot(US_CPIF)
+plot(US_CPIF$residuals)
+hist(US_CPIF$residuals)
+Acf(US_CPIF$residuals)
+accuracy(US_CPIF)
+```
+#### The accuracy measure to utilize is ME as the value is smallest. 
