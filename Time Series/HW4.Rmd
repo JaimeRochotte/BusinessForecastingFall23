@@ -1,0 +1,79 @@
+---
+title: "HW4"
+author: "Jaime Rochotte"
+output: html_document
+date: "10/19/2023"
+---
+```{r}
+library(fpp)
+library(fpp2)
+library(TTR)
+library(readxl)
+library(xts) 
+#install.packages("tsbox")
+library(tsbox)
+df<-read_excel("US CPI.xls")
+#Convert date column to date
+US_CPI$Yearmon <- as.Date(US_CPI$Yearmon)
+#Convert to TS, using Date formatting for Start period, and freq of 12 to do periods monthly
+US_series.ts <- ts(US_CPI$CPI, start= c(as.numeric(format(US_CPI$Yearmon[1],"%Y")), as.numeric(format(US_CPI$Yearmon[1], "%m"))), frequency = 12)
+
+ts <- xts(US_CPI$CPI, US_CPI$Yearmon)                   
+ts 
+ts_subset <- window(ts, start = "2015-01-01", end = "2020-12-01")
+USTS <-ts_ts(ts_subset)
+
+attributes(USTS)
+plot(USTS)
+Acf(USTS)
+
+#take Mean of all available history
+mean_forecast <- meanf(USTS,12)
+plot(mean_forecast)
+
+# Naive
+naive_forecast <- naive(USTS,12)
+plot(naive_forecast)
+
+# Random Walk
+rwf_forecast <- rwf(USTS,12)
+rwf_forecast <- rwf(USTS,12, drift=TRUE)
+# Seasonal Naive
+snaive_forecast <- snaive(USTS,12)
+
+# Moving Averages
+
+MA12_forecast <- ma(USTS,order=12)
+MA24_forecast <- ma(USTS,order=24)
+
+# plot all in a single chart
+plot.new()
+plot(mean_forecast)
+lines(naive_forecast$mean,col="red")
+lines(rwf_forecast$mean,col="green")
+lines(snaive_forecast$mean,col="black")
+lines(MA12_forecast,col="Pink")
+lines(MA24_forecast,col="Blue")
+# what other attributes are there?
+attributes(naive_forecast)
+
+# Decomposition
+ets_forecast <- ets(US_series.ts)
+plot(ets_forecast)
+attributes(ets_forecast)
+ets_forecast$mse
+# HoltWinters
+HW_forecast <- HoltWinters(US_series.ts)
+plot(HW_forecast)
+SSE_Simple <- HoltWinters(US_series.ts,beta=FALSE,gamma=FALSE)
+attributes(SSE_Simple)
+plot(SSE_Simple)
+SSE_Simple$SSE
+head(SSE_Simple$fitted)
+
+#Forecast
+forecast_ets_1 <- forecast.ets(ets_forecast, h=12)
+plot(forecast_ets_1)
+forecast_ets_2 <- forecast(ets_forecast, h=12)
+plot(forecast_ets_2)
+```
