@@ -1,0 +1,59 @@
+---
+title: "Time Series Decomposition"
+author: "Jaime Rochotte"
+date: "10/27/2023"
+output: html_document
+---
+```{r}
+library(fpp)
+library(fpp2)
+library(TTR)
+library(readxl)
+library(xts) 
+#install.packages("tsbox")
+library(tsbox)
+US_CPI<-read_excel("US CPI.xls")
+#Convert date column to date
+US_CPI$Yearmon <- as.Date(US_CPI$Yearmon)
+#Convert to TS, using Date formatting for Start period, and freq of 12 to do periods monthly
+US_series.ts <- ts(US_CPI$CPI, start= c(as.numeric(format(US_CPI$Yearmon[1],"%Y")), as.numeric(format(US_CPI$Yearmon[1], "%m"))), frequency = 12)
+
+
+ts <- xts(US_CPI$CPI, US_CPI$Yearmon)                   
+ts 
+ts_subset <- window(ts, start = "2015-01-01", end = "2020-12-01")
+USTS <-ts_ts(ts_subset)
+
+attributes(USTS)
+plot(USTS)
+Acf(USTS)
+
+USTS
+plot(USTS)
+# Takes 2 Arguments
+stl_decomp <- stl(USTS,s.window ="periodic")
+# Table View
+stl_decomp
+# Graph View
+plot(stl_decomp)
+
+# What else comes with stl object
+attributes(stl_decomp)
+# Lets print out a seasonal adjustment
+seasadj(stl_decomp)
+# Plot a line on the graph
+lines(seasadj(stl_decomp))
+# Default period forecast
+f_stl <- forecast(stl_decomp)
+# you can pass the # of period
+f_stl <- forecast(stl_decomp,h=15)
+#Print it out or graph it
+f_stl
+plot(f_stl)
+# There is more than one way to do things
+decomp_df <- decompose(USTS)
+attributes(decomp_df)
+seasadj(decomp_df)
+
+```
+
