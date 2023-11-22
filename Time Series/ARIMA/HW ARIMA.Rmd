@@ -1,0 +1,41 @@
+---
+title: "HW ARIMA"
+author: "Jaime Rochotte"
+output: html_document
+date: "11/21/2023"
+---
+```{r}
+library(fpp)
+library(fpp2)
+library(TTR)
+library(xts) 
+library(tsbox)
+library(readxl)
+US_CPI<-read_excel("US CPI.xls")
+View(US_CPI)
+#Convert date column to date
+US_CPI$Yearmon <- as.Date(US_CPI$Yearmon)
+#Convert to TS, using Date formatting for Start period, and freq of 12 to do periods monthly
+US_series.ts <- ts(US_CPI$CPI, start= c(as.numeric(format(US_CPI$Yearmon[1],"%Y")), as.numeric(format(US_CPI$Yearmon[1], "%m"))), frequency = 12)
+
+ts <- xts(US_CPI$CPI, US_CPI$Yearmon)                   
+ts 
+ts_subset <- window(ts, start = "2015-01-01", end = "2020-12-01")
+USTS <-ts_ts(ts_subset)
+
+#ARIMA
+auto.arima(ts_subset, stepwise=FALSE, approximation=FALSE, trace = TRUE)
+#The best model is found to be ARIMA(0,1,1) with drift which is verified visually to be the lowest value.
+fit<-auto.arima(ts_subset, stepwise=FALSE, approximation=FALSE, trace = TRUE)
+res<-residuals(fit)
+plot(res)
+tsdisplay(res)
+hist(res)
+#Forecast the next 5 months
+fcast<-forecast(fit,h=5) 
+plot(fcast)
+fcast
+plot(ts_subset)
+lines(fcast$fitted,col="Red")
+accuracy(fcast)
+```
